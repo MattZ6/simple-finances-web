@@ -1,3 +1,5 @@
+import Head from 'next/head';
+
 import { Provider } from '@contexts/provider';
 
 import { MainLayout } from '@layouts/Main';
@@ -8,15 +10,21 @@ import { HomePageStyles as Styles } from '@styles/pages/home/styles';
 
 export default function HomePage() {
   return (
-    <Provider>
-      <Styles.Wrapper>
-        <Styles.Container>
-          <HomePageHeader />
+    <>
+      <Head>
+        <title>Minhas continhas</title>
+      </Head>
 
-          <HomePageContent />
-        </Styles.Container>
-      </Styles.Wrapper>
-    </Provider>
+      <Provider>
+        <Styles.Wrapper>
+          <Styles.Container>
+            <HomePageHeader />
+
+            <HomePageContent />
+          </Styles.Container>
+        </Styles.Wrapper>
+      </Provider>
+    </>
   );
 }
 

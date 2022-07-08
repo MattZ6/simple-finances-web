@@ -16,7 +16,7 @@ export default function LoginPage({ googleLoginURL }: LoginPageProps) {
   return (
     <Styles.Container>
       <Head>
-        <title>Login</title>
+        <title>Suas finanças descomplicadas</title>
       </Head>
 
       <Styles.Content>
