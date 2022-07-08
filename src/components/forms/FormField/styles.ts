@@ -71,15 +71,10 @@ export namespace FormFieldStyles {
   });
 
   export const Label = styled('small', {
-    position: 'absolute',
-    left: '$large',
-
     fontSize: '$small',
-    lineHeight: '$small',
+    lineHeight: '$normal',
     fontWeight: '500',
-    color: '$textLoContrast',
-
-    top: '4px',
+    color: '$defaultTextLoContrastColor',
 
     pointerEvents: 'none',
     userSelect: 'none',

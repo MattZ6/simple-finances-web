@@ -17,16 +17,17 @@ type Props = InputHTMLAttributes<HTMLInputElement> & {
 };
 
 const PrimitiveFormField: ForwardRefRenderFunction<HTMLInputElement, Props> = (
-  { name, icon: Icon, error, ...rest },
+  { name, label, icon: Icon, error, ...rest },
   ref
 ) => {
   return (
     <Styles.Container>
+      {label && <Styles.Label>{label}</Styles.Label>}
+
       <Styles.Field htmlFor={name} hasError={!!error}>
         {Icon && <Icon size={20} />}
 
         <Styles.InputContainer>
-          {/* <Styles.Label>{label}</Styles.Label> */}
           <Styles.Input
             ref={ref}
             id={name}

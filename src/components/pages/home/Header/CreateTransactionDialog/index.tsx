@@ -123,16 +123,18 @@ export function CreateTransactionDialog({ isOpen, onOpenStateChange }: Props) {
 
               <form onSubmit={handleSubmit(submit)}>
                 <FormField
+                  label="Título"
                   icon={TextT}
-                  placeholder="Qual o título da conta?"
+                  placeholder="Do que se trata?"
                   error={formState.errors.name?.message}
                   {...register('name')}
                 />
 
                 <FormField
+                  label="Valor"
                   icon={CurrencyDollar}
                   type="number"
-                  placeholder="Qual o valor?"
+                  placeholder="0,00"
                   error={formState.errors.value?.message}
                   {...register('value')}
                 />
