@@ -7,6 +7,15 @@ import { ListLoading } from './list';
 import { List } from './list/List';
 import { TransactionsStyles as Styles } from './styles';
 
+export function TransactionsLoading() {
+  return (
+    <Styles.Container>
+      <BalanceLoading />
+      <ListLoading />
+    </Styles.Container>
+  );
+}
+
 export function Transactions() {
   const { isLoading, isError, dayTransactions } = useBalance();
 
@@ -15,12 +24,7 @@ export function Transactions() {
   }
 
   if (isLoading) {
-    return (
-      <Styles.Container>
-        <BalanceLoading />
-        <ListLoading />
-      </Styles.Container>
-    );
+    return <TransactionsLoading />;
   }
 
   if (!dayTransactions.length) {
