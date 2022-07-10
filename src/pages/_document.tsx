@@ -23,6 +23,8 @@ export default class CustomDocument extends Document {
             id="stitches"
             dangerouslySetInnerHTML={{ __html: getCssText() }}
           />
+          
+          <title>Minhas continhas</title>
         </Head>
 
         <body>
