@@ -7,6 +7,13 @@ export namespace TransactionsProviderData {
     color_hex: string;
   };
 
+  type Category = {
+    id: string;
+    title: string;
+    slug: string;
+    description: string;
+  };
+
   export type Transaction = {
     id: string;
     title: string;
@@ -14,6 +21,7 @@ export namespace TransactionsProviderData {
     value: number;
     date: Date;
     tags: Tag[];
+    category?: Category;
   };
 
   export type Balance = {
