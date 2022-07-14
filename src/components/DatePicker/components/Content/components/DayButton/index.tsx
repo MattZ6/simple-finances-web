@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { memo, useMemo } from 'react';
 
 import { DatePickerContextData } from '@components/DatePicker/context/types';

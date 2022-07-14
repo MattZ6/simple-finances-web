@@ -105,7 +105,7 @@ export function CreateTransactionDialog({ isOpen, onOpenStateChange }: Props) {
 
       // TODO: Recarregar a lista de meses e recarregar a lista de transações
     } catch (error) {
-      console.log(error);
+      // TODO: Tratar os erros
     }
   };
 
