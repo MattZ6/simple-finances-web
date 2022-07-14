@@ -18,6 +18,11 @@ export function UpdateTransactionCategoryDialog({
 }: Props) {
   const { isLoading } = useUpdateTransactionCategory();
 
+  const title =
+    transaction.type === 'INCOME'
+      ? 'Qual a categoria desse recebimento?'
+      : 'Qual a categoria dessa conta?';
+
   return (
     <Styles.Dialog open modal allowPinchZoom>
       <Styles.Portal>
@@ -26,7 +31,7 @@ export function UpdateTransactionCategoryDialog({
         <UpdateTransactionCategoryProvider transaction={transaction}>
           <Styles.Content>
             <Styles.Header>
-              <Styles.Title>Qual a categoria dessa conta?</Styles.Title>
+              <Styles.Title>{title}</Styles.Title>
             </Styles.Header>
 
             <Styles.Body>

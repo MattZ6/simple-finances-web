@@ -43,7 +43,11 @@ export const Category = memo(({ category }: Props) => {
       onKeyDown={handleKeyDown}
     >
       <Styles.IconContainer>
-        <TransactionCategoryIcon label={category.slug} size={24} />
+        <TransactionCategoryIcon
+          label={category.slug}
+          type={category.type}
+          size={24}
+        />
       </Styles.IconContainer>
 
       <Styles.Content>
