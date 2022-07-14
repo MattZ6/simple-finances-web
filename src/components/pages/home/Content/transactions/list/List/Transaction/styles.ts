@@ -43,6 +43,10 @@ export namespace TransactionStyles {
           backgroundColor: '$successElementBackground',
           color: '$successTextLoContrastColor',
 
+          '&:not(:disabled):hover': {
+            backgroundColor: '$successElementHoverBackground',
+          },
+
           '&:focus-visible': {
             outlineColor: '$successElementBorder',
           },

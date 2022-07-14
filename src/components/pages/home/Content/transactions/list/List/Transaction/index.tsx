@@ -1,4 +1,3 @@
-import { CurrencyDollarSimple } from 'phosphor-react';
 import { memo, useCallback, useMemo } from 'react';
 
 import { TransactionsProviderData } from '@contexts/Transactions/types';
@@ -38,18 +37,14 @@ export const Transaction = memo(({ transaction, onCategoryPressed }: Props) => {
       <Tooltip content="Editar categoria">
         <Styles.CategoryButton
           type="button"
-          disabled={transaction.type === 'INCOME'}
           transactionType={transaction.type}
           onClick={() => onCategoryPressed(transaction)}
         >
-          {transaction.type === 'INCOME' ? (
-            <CurrencyDollarSimple size={24} />
-          ) : (
-            <TransactionCategoryIcon
-              label={transaction.category?.slug ?? ''}
-              size={24}
-            />
-          )}
+          <TransactionCategoryIcon
+            label={transaction.category?.slug ?? ''}
+            type={transaction.type}
+            size={24}
+          />
         </Styles.CategoryButton>
       </Tooltip>
 
