@@ -1,18 +1,23 @@
-import { CurrencyDollarSimple, Receipt } from 'phosphor-react';
+import { CurrencyDollarSimple } from 'phosphor-react';
 import { memo, useMemo } from 'react';
 
 import { TransactionsProviderData } from '@contexts/Transactions/types';
 
 import { formatMoney } from '@utils/formatMoney';
 
+import { TransactionCategoryIcon } from '@components/TransactionCategoryIcon';
+
 import { TransactionStyles as Styles } from './styles';
 // import { Tags } from './Tags';
 
+type Transaction = TransactionsProviderData.Transaction;
+
 type Props = {
-  transaction: TransactionsProviderData.Transaction;
+  transaction: Transaction;
+  onCategoryPressed: (transaction: Transaction) => void;
 };
 
-export const Transaction = memo(({ transaction }: Props) => {
+export const Transaction = memo(({ transaction, onCategoryPressed }: Props) => {
   const value = useMemo(() => {
     return formatMoney(transaction.value);
   }, [transaction.value]);
@@ -23,11 +28,15 @@ export const Transaction = memo(({ transaction }: Props) => {
         type="button"
         disabled={transaction.type === 'INCOME'}
         transactionType={transaction.type}
+        onClick={() => onCategoryPressed(transaction)}
       >
         {transaction.type === 'INCOME' ? (
           <CurrencyDollarSimple size={24} />
         ) : (
-          <Receipt size={24} />
+          <TransactionCategoryIcon
+            label={transaction.category?.slug ?? ''}
+            size={24}
+          />
         )}
       </Styles.CategoryButton>
 

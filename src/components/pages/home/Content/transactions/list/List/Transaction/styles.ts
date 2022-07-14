@@ -25,6 +25,14 @@ export namespace TransactionStyles {
 
     border: 'none',
 
+    '&:not(:disabled)': {
+      cursor: 'pointer',
+    },
+
+    transitionDuration: '150ms',
+    transitionTimingFunction: 'ease-out',
+    transitionProperty: 'background-color, color, outline-color',
+
     variants: {
       transactionType: {
         INCOME: {
@@ -34,6 +42,10 @@ export namespace TransactionStyles {
         OUTCOME: {
           backgroundColor: '$defaultElementBackground',
           color: '$defaultTextLoContrastColor',
+
+          '&:not(:disabled):hover': {
+            backgroundColor: '$defaultElementHoverBackground',
+          },
         },
       },
     },
