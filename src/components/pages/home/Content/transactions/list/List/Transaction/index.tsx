@@ -1,12 +1,14 @@
 import { CurrencyDollarSimple } from 'phosphor-react';
-import { memo, useMemo } from 'react';
+import { memo, useCallback, useMemo } from 'react';
 
 import { TransactionsProviderData } from '@contexts/Transactions/types';
 
 import { formatMoney } from '@utils/formatMoney';
 
+import { Tooltip } from '@components/Tooltip';
 import { TransactionCategoryIcon } from '@components/TransactionCategoryIcon';
 
+import { TransactionMenu } from './Menu';
 import { TransactionStyles as Styles } from './styles';
 // import { Tags } from './Tags';
 
@@ -22,23 +24,34 @@ export const Transaction = memo(({ transaction, onCategoryPressed }: Props) => {
     return formatMoney(transaction.value);
   }, [transaction.value]);
 
+  const handleMenuOptionSelected = useCallback(
+    (option: TransactionMenu.Option) => {
+      if (option === 'UPDATE_CATEGORY') {
+        onCategoryPressed(transaction);
+      }
+    },
+    [onCategoryPressed, transaction]
+  );
+
   return (
     <Styles.Container>
-      <Styles.CategoryButton
-        type="button"
-        disabled={transaction.type === 'INCOME'}
-        transactionType={transaction.type}
-        onClick={() => onCategoryPressed(transaction)}
-      >
-        {transaction.type === 'INCOME' ? (
-          <CurrencyDollarSimple size={24} />
-        ) : (
-          <TransactionCategoryIcon
-            label={transaction.category?.slug ?? ''}
-            size={24}
-          />
-        )}
-      </Styles.CategoryButton>
+      <Tooltip content="Editar categoria">
+        <Styles.CategoryButton
+          type="button"
+          disabled={transaction.type === 'INCOME'}
+          transactionType={transaction.type}
+          onClick={() => onCategoryPressed(transaction)}
+        >
+          {transaction.type === 'INCOME' ? (
+            <CurrencyDollarSimple size={24} />
+          ) : (
+            <TransactionCategoryIcon
+              label={transaction.category?.slug ?? ''}
+              size={24}
+            />
+          )}
+        </Styles.CategoryButton>
+      </Tooltip>
 
       <Styles.Content>
         <Styles.TitleContainer>
@@ -52,9 +65,9 @@ export const Transaction = memo(({ transaction, onCategoryPressed }: Props) => {
 
       <Styles.Value transactionType={transaction.type}>{value}</Styles.Value>
 
-      {/* <Styles.MenuButton>
-        <DotsThreeVertical size={24} weight="bold" />
-      </Styles.MenuButton> */}
+      <Styles.MenuContainer>
+        <TransactionMenu onSelect={handleMenuOptionSelected} />
+      </Styles.MenuContainer>
     </Styles.Container>
   );
 });

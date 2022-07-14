@@ -29,6 +29,10 @@ export namespace TransactionStyles {
       cursor: 'pointer',
     },
 
+    outlineWidth: '2px',
+    outlineStyle: 'solid',
+    outlineColor: 'transparent',
+
     transitionDuration: '150ms',
     transitionTimingFunction: 'ease-out',
     transitionProperty: 'background-color, color, outline-color',
@@ -38,6 +42,10 @@ export namespace TransactionStyles {
         INCOME: {
           backgroundColor: '$successElementBackground',
           color: '$successTextLoContrastColor',
+
+          '&:focus-visible': {
+            outlineColor: '$successElementBorder',
+          },
         },
         OUTCOME: {
           backgroundColor: '$defaultElementBackground',
@@ -45,6 +53,10 @@ export namespace TransactionStyles {
 
           '&:not(:disabled):hover': {
             backgroundColor: '$defaultElementHoverBackground',
+          },
+
+          '&:focus-visible': {
+            outlineColor: '$defaultElementBorder',
           },
         },
       },
@@ -103,24 +115,8 @@ export namespace TransactionStyles {
     },
   });
 
-  export const MenuButton = styled('button', {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-
-    $$size: '36px',
-
-    width: '$$size',
-    height: '$$size',
-    borderRadius: '$$size',
-
-    border: 'none',
-    backgroundColor: 'transparent',
-
-    color: '$defaultTextLoContrastColor',
-
-    '&:not(:disabled):hover': {
-      backgroundColor: '$defaultElementHoverBackground',
-    },
+  export const MenuContainer = styled('div', {
+    marginLeft: '-$small',
+    marginRight: '-$small',
   });
 }
