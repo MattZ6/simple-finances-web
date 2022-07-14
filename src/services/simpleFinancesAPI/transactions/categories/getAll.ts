@@ -7,23 +7,39 @@ export namespace ListAllTransactionCategoriesService {
     id: string;
     title: string;
     description: string;
+    type: 'INCOME' | 'OUTCOME';
     slug: string;
+  };
+
+  type Request = {
+    type: 'INCOME' | 'OUTCOME';
   };
 
   type Response = TransactionCategory[];
 
-  export async function execute() {
+  export async function execute(request: Request) {
     const { data } = await apiClient.get<Response>(
-      '/v1/transactions/categories'
+      '/v1/transactions/categories',
+      {
+        params: request,
+      }
     );
 
     return data;
   }
 }
 
-export function useCategories() {
-  return useQuery('categories', ListAllTransactionCategoriesService.execute, {
-    refetchOnWindowFocus: false,
-    staleTime: 1 * 24 * 60 * 60 * 1000, // 👈 1 day
-  });
+type Input = {
+  type: 'INCOME' | 'OUTCOME';
+};
+
+export function useCategories({ type }: Input) {
+  return useQuery(
+    ['categories', type],
+    () => ListAllTransactionCategoriesService.execute({ type }),
+    {
+      refetchOnWindowFocus: false,
+      staleTime: 1 * 24 * 60 * 60 * 1000, // 👈 1 day
+    }
+  );
 }
