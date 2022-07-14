@@ -25,7 +25,7 @@ export function UpdateTransactionCategoryProvider({
   transaction,
   children,
 }: Props) {
-  const { data, isLoading } = useCategories();
+  const { data, isLoading } = useCategories({ type: transaction.type });
   const [selected, setSelected] =
     useState<UpdateTransactionCategoryContextData.Selected>(
       transaction.category

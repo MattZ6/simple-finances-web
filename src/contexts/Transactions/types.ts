@@ -12,6 +12,7 @@ export namespace TransactionsProviderData {
     title: string;
     slug: string;
     description: string;
+    type: 'INCOME' | 'OUTCOME';
   };
 
   export type Transaction = {
