@@ -21,10 +21,7 @@ type Props = {
   children: React.ReactNode;
 };
 
-export function UpdateTransactionCategoryProvider({
-  transaction,
-  children,
-}: Props) {
+export function SelectCategoryProvider({ transaction, children }: Props) {
   const { data, isLoading } = useCategories({ type: transaction.type });
   const [selected, setSelected] =
     useState<UpdateTransactionCategoryContextData.Selected>(
@@ -86,6 +83,6 @@ export function UpdateTransactionCategoryProvider({
   );
 }
 
-export function useUpdateTransactionCategory() {
+export function useSelectCategory() {
   return useContext(UpdateTransactionCategoryContext);
 }

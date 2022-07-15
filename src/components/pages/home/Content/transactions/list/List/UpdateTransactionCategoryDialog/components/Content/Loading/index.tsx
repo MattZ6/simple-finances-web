@@ -1,3 +1,5 @@
+import { memo } from 'react';
+
 import { Skeleton } from '@components/Skeleton';
 
 import { LoadingStyles as Styles } from './styles';
@@ -15,16 +17,17 @@ function ItemSkeleton() {
   );
 }
 
-export function Loading() {
+type Props = {
+  skeletonCount?: number;
+};
+
+export const Loading = memo(({ skeletonCount = 5 }: Props) => {
   return (
     <Styles.Container>
-      <ItemSkeleton />
-      <ItemSkeleton />
-      <ItemSkeleton />
-      <ItemSkeleton />
-      <ItemSkeleton />
-      <ItemSkeleton />
-      <ItemSkeleton />
+      {Array.from({ length: skeletonCount }).map((_, index) => (
+        // eslint-disable-next-line react/no-array-index-key
+        <ItemSkeleton key={`skeleton_${index}`} />
+      ))}
     </Styles.Container>
   );
-}
+});

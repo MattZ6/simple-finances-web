@@ -4,19 +4,23 @@ import { ListAllTransactionCategoriesService } from '@services/simpleFinancesAPI
 
 import { TransactionCategoryIcon } from '@components/TransactionCategoryIcon';
 
-import { useUpdateTransactionCategory } from '../../../context';
+import { useSelectCategory } from '../../../context';
 import { Category as Styles } from './styles';
 
 type Props = {
+  disabled?: boolean;
   category: ListAllTransactionCategoriesService.TransactionCategory;
 };
 
-export const Category = memo(({ category }: Props) => {
-  const { selected, select, selectPrevious, selectNext } =
-    useUpdateTransactionCategory();
+export const Category = memo(({ category, disabled }: Props) => {
+  const { selected, select, selectPrevious, selectNext } = useSelectCategory();
 
   const handleKeyDown = useCallback(
     (event: KeyboardEvent<HTMLButtonElement>) => {
+      if (disabled) {
+        return;
+      }
+
       const keymaps: { [key: string]: () => void } = {
         ArrowUp: () => selectPrevious(),
         ArrowDown: () => selectNext(),
@@ -31,7 +35,7 @@ export const Category = memo(({ category }: Props) => {
         callback();
       }
     },
-    [selectPrevious, selectNext]
+    [disabled, selectPrevious, selectNext]
   );
 
   return (
@@ -41,6 +45,7 @@ export const Category = memo(({ category }: Props) => {
       tabIndex={category.id === selected?.id ? 0 : -1}
       onClick={() => select(category)}
       onKeyDown={handleKeyDown}
+      disabled={disabled}
     >
       <Styles.IconContainer>
         <TransactionCategoryIcon

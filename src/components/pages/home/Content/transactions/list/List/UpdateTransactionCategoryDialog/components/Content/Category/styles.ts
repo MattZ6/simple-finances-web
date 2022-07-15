@@ -44,6 +44,10 @@ export namespace Category {
       },
     },
 
+    '&:focus': {
+      outlineColor: '$defaultElementBorder',
+    },
+
     variants: {
       selected: {
         true: {
@@ -64,6 +68,10 @@ export namespace Category {
             '> aside': {
               backgroundColor: '$brandElementHoverBackground',
             },
+          },
+
+          '&:focus': {
+            outlineColor: '$brandElementBorder',
           },
 
           '> aside': {

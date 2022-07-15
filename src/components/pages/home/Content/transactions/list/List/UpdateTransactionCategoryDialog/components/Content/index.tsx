@@ -1,12 +1,16 @@
 import { useEffect } from 'react';
 
-import { useUpdateTransactionCategory } from '../../context';
+import { useSelectCategory } from '../../context';
 import { Category } from './Category';
 import { Loading } from './Loading';
 import { ContentStyles as Styles } from './styles';
 
-function List() {
-  const { categories, selected } = useUpdateTransactionCategory();
+type ListProps = {
+  isSubmiting?: boolean;
+};
+
+function List({ isSubmiting }: ListProps) {
+  const { categories, selected } = useSelectCategory();
 
   useEffect(() => {
     if (selected) {
@@ -21,24 +25,41 @@ function List() {
           });
         }, 0);
       }
+    } else if (categories.length) {
+      const element = document.getElementById(categories[0].id);
+
+      if (element) {
+        setTimeout(() => {
+          element.focus({ preventScroll: true });
+        }, 0);
+      }
     }
-  }, [selected]);
+  }, [selected, categories]);
 
   return (
     <Styles.Container>
       {categories.map(category => (
-        <Category key={category.id} category={category} />
+        <Category
+          key={category.id}
+          category={category}
+          disabled={!!isSubmiting}
+        />
       ))}
     </Styles.Container>
   );
 }
 
-export function Content() {
-  const { isLoading } = useUpdateTransactionCategory();
+type Props = {
+  isSubmiting?: boolean;
+  skeletonCount?: number;
+};
+
+export function Content({ isSubmiting, skeletonCount }: Props) {
+  const { isLoading } = useSelectCategory();
 
   if (isLoading) {
-    return <Loading />;
+    return <Loading skeletonCount={skeletonCount} />;
   }
 
-  return <List />;
+  return <List isSubmiting={isSubmiting} />;
 }
