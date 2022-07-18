@@ -1,36 +1,39 @@
 import { styled } from '@styles/stitches.config';
 
-export namespace TransactionTypeSwitchStyles {
+export namespace DatePickerPillsStyles {
   export const Container = styled('div', {
     display: 'flex',
     alignItems: 'center',
+    gap: '4px',
 
-    padding: '4px',
-    borderRadius: '32px',
-
-    backgroundColor: '$brandElementBackground',
-
-    marginBottom: '$normal',
+    paddingLeft: '$small',
+    paddingRight: '$small',
+    paddingBottom: '$small',
   });
 
   export const Button = styled('button', {
-    flex: 1,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-
-    height: '32px',
-    borderRadius: '32px',
-    border: 'none',
+    flexShrink: 0,
 
     backgroundColor: 'transparent',
-    color: '$brandTextHiContrastColor',
+    paddingLeft: '$small',
+    paddingRight: '$small',
 
-    cursor: 'pointer',
+    borderWidth: '1px',
+    borderStyle: 'solid',
+    borderColor: '$brandElementBorder',
+    borderRadius: '$medium',
+
+    fontSize: '$small',
+    lineHeight: '$small',
+    fontWeight: '500',
+    color: '$brandSolidBackground',
 
     transitionDuration: '150ms',
     transitionTimingFunction: 'ease-out',
-    transitionProperty: 'background-color, color, outline-color',
+    transitionProperty: 'background-color, color, border-color, outline-color',
 
     outlineWidth: '2px',
     outlineStyle: 'solid',
@@ -38,10 +41,18 @@ export namespace TransactionTypeSwitchStyles {
 
     '&:disabled': {
       cursor: 'not-allowed',
+
+      backgroundColor: 'transparent',
+      borderColor: 'transparent',
+      color: '$brandTextLoContrastColor',
     },
 
     '&:not(:disabled):hover': {
+      cursor: 'pointer',
+
       backgroundColor: '$brandElementHoverBackground',
+      color: '$brandSolidHoverBackground',
+      borderColor: '$brandElementHoverBorder',
     },
 
     '&:focus-visible': {
@@ -53,10 +64,11 @@ export namespace TransactionTypeSwitchStyles {
         true: {
           backgroundColor: '$brandSolidBackground',
           color: '$white',
-          fontWeight: '500',
 
           '&:not(:disabled):hover': {
             backgroundColor: '$brandSolidHoverBackground',
+            color: '$white',
+            borderColor: '$brandSolidHoverBackground',
           },
         },
       },

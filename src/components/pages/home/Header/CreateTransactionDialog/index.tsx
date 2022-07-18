@@ -1,88 +1,48 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import { DialogTitle } from '@radix-ui/react-dialog';
-import { CurrencyDollar, TextT, Check } from 'phosphor-react';
+import { CurrencyDollar, TextT } from 'phosphor-react';
 import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import * as yup from 'yup';
 
+import { useAlert } from '@hooks/useAlert';
 import { useBalance } from '@hooks/useBalance';
+
+import { useCreateTransaction } from '@services/simpleFinancesAPI/transactions/create';
 
 import { DatePicker } from '@components/DatePicker';
 import { FormField } from '@components/forms/FormField';
+import { LoadingSpinner } from '@components/Spinner';
 
 import { TransactionTypeSwitch } from './components';
 import { CreateTransactionDialogStyles as Styles } from './styles';
 
+const schema = yup.object().shape({
+  name: yup
+    .string()
+    .required('Obrigatório')
+    .trim()
+    .min(3, 'Pelo menos 3 caracteres'),
+  value: yup
+    .number()
+    .required('Obrigatório')
+    .typeError('Valor inválido')
+    .min(0.01, 'No mínimo R$ 0,01'),
+});
+
 type Props = {
-  isOpen: boolean;
-  onOpenStateChange: (isOpen: boolean) => void;
+  onCloseRequested: () => void;
 };
-
-type Tag = {
-  id: string;
-  title: string;
-  color_hex: string;
-  selected?: boolean;
-};
-
-type TagProps = {
-  tag: Tag;
-  onPress: () => void;
-};
-
-function Tag({ tag, onPress }: TagProps) {
-  return (
-    <Styles.Tag
-      style={
-        tag.selected
-          ? {
-              backgroundColor: tag.color_hex,
-            }
-          : {
-              color: tag.color_hex,
-              borderColor: tag.color_hex,
-            }
-      }
-      onClick={onPress}
-    >
-      {tag.selected ? (
-        <Check size={12} />
-      ) : (
-        <Styles.TagDot style={{ backgroundColor: tag.color_hex }} />
-      )}
-      {tag.title}
-    </Styles.Tag>
-  );
-}
 
 type FormScheme = {
   name: string;
   value: number;
 };
 
-export function CreateTransactionDialog({ isOpen, onOpenStateChange }: Props) {
+export function CreateTransactionDialog({ onCloseRequested }: Props) {
   const [type, setType] = useState<'INCOME' | 'OUTCOME'>('OUTCOME');
-  // const [tags, setTags] = useState<Tag[]>([
-  //   { id: '1', title: 'Kate', color_hex: '#ca71ff' },
-  //   { id: '2', title: 'Adri', color_hex: '#ffd171' },
-  //   { id: '3', title: 'CIS', color_hex: '#7671ff' },
-  //   { id: '4', title: 'Minha clínica', color_hex: '#ff71fb' },
-  // ]);
   const [date, setDate] = useState(new Date());
-  const { createTransaction } = useBalance();
-
-  const schema = yup.object().shape({
-    name: yup
-      .string()
-      .required('Obrigatório')
-      .trim()
-      .min(3, 'Pelo menos 3 caracteres'),
-    value: yup
-      .number()
-      .required('Obrigatório')
-      .typeError('Valor inválido')
-      .min(0.01, 'No mínimo R$ 0,01'),
-  });
+  const { mutateAsync, isLoading: isSubmiting } = useCreateTransaction();
+  const { showAlert } = useAlert();
 
   const { register, handleSubmit, formState, reset } = useForm<FormScheme>({
     resolver: yupResolver(schema),
@@ -92,34 +52,46 @@ export function CreateTransactionDialog({ isOpen, onOpenStateChange }: Props) {
     const { name, value } = data;
 
     try {
-      await createTransaction({
+      await mutateAsync({
         title: name,
         type,
         value,
         date,
       });
 
-      reset();
+      onCloseRequested();
 
-      onOpenStateChange(false);
+      reset();
 
       // TODO: Recarregar a lista de meses e recarregar a lista de transações
     } catch (error) {
+      showAlert({
+        title: 'Falha ao salvar a conta',
+        description:
+          'Não foi possível salvar a conta nesse momento. Por favor, tente novamente mais tarde',
+        closeButtonText: 'Ok',
+      });
       // TODO: Tratar os erros
     }
   };
 
   return (
-    <Styles.Root modal open={isOpen} onOpenChange={onOpenStateChange}>
+    <Styles.Root modal open>
       <Styles.Portal>
         <Styles.Overlay />
 
         <Styles.Content>
-          <DialogTitle>Nova conta</DialogTitle>
+          <Styles.Header>
+            <Styles.Title>Nova conta</Styles.Title>
+          </Styles.Header>
 
-          <Styles.Form>
-            <Styles.Slot>
-              <TransactionTypeSwitch selected={type} onChange={setType} />
+          <Styles.Body>
+            <Styles.LeftContainer>
+              <TransactionTypeSwitch
+                selected={type}
+                onChange={setType}
+                disabled={isSubmiting}
+              />
 
               <form onSubmit={handleSubmit(submit)}>
                 <FormField
@@ -127,6 +99,7 @@ export function CreateTransactionDialog({ isOpen, onOpenStateChange }: Props) {
                   icon={TextT}
                   placeholder="Do que se trata?"
                   error={formState.errors.name?.message}
+                  disabled={isSubmiting}
                   {...register('name')}
                 />
 
@@ -136,38 +109,41 @@ export function CreateTransactionDialog({ isOpen, onOpenStateChange }: Props) {
                   type="number"
                   placeholder="0,00"
                   error={formState.errors.value?.message}
+                  disabled={isSubmiting}
                   {...register('value')}
                 />
 
-                <Styles.SubmitButton hidden>Salvar</Styles.SubmitButton>
+                <Styles.SubmitButton
+                  type="submit"
+                  hidden
+                  tabIndex={-1}
+                  disabled={isSubmiting}
+                >
+                  Salvar
+                </Styles.SubmitButton>
               </form>
+            </Styles.LeftContainer>
 
-              {/* <Styles.TagList>
-                {tags.map(tag => (
-                  <Tag
-                    key={tag.id}
-                    tag={tag}
-                    onPress={() =>
-                      setTags(state =>
-                        state.map(x =>
-                          x.id === tag.id ? { ...x, selected: !x.selected } : x
-                        )
-                      )
-                    }
-                  />
-                ))}
-              </Styles.TagList> */}
-            </Styles.Slot>
-
-            <Styles.Slot>
-              <DatePicker onChange={setDate} />
-            </Styles.Slot>
-          </Styles.Form>
+            <Styles.RightContainer>
+              <DatePicker onChange={setDate} disabled={isSubmiting} />
+            </Styles.RightContainer>
+          </Styles.Body>
 
           <Styles.Footer>
-            <Styles.CancelButton type="button">Cancelar</Styles.CancelButton>
-            <Styles.SubmitButton type="button" onClick={handleSubmit(submit)}>
-              Salvar
+            <Styles.CloseButton
+              type="button"
+              disabled={isSubmiting}
+              onClick={onCloseRequested}
+            >
+              Cancelar
+            </Styles.CloseButton>
+            <Styles.SubmitButton
+              type="button"
+              onClick={handleSubmit(submit)}
+              disabled={isSubmiting}
+              submiting={isSubmiting}
+            >
+              {isSubmiting ? <LoadingSpinner /> : 'Salvar'}
             </Styles.SubmitButton>
           </Styles.Footer>
         </Styles.Content>

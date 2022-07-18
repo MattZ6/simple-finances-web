@@ -3,8 +3,8 @@ import { styled } from '@styles/stitches.config';
 export namespace DatePickerWeeksHeaderStyles {
   export const Header = styled('header', {
     display: 'grid',
-    gridTemplateColumns: 'repeat(7, 1fr)',
-    gap: '$small',
+    gridTemplateColumns: 'repeat(7, 36px)',
+    gap: '4px',
   });
 
   export const Day = styled('strong', {
@@ -15,8 +15,10 @@ export namespace DatePickerWeeksHeaderStyles {
     borderRadius: '$medium',
 
     fontSize: '$small',
-    lineHeight: '$large',
-    fontWeight: '500',
-    color: '$defaultTextLoContrastColor',
+    lineHeight: '$normal',
+    fontWeight: '400',
+    color: '$brandTextLoContrastColor',
+
+    cursor: 'default',
   });
 }

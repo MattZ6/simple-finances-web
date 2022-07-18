@@ -34,7 +34,9 @@ function Component() {
         </Styles.CreateTransactionButton>
       </PageHeader>
 
-      <CreateTransactionDialog isOpen={isOpen} onOpenStateChange={setIsOpen} />
+      {isOpen && (
+        <CreateTransactionDialog onCloseRequested={() => setIsOpen(false)} />
+      )}
     </>
   );
 }

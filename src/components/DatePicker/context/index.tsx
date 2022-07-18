@@ -85,6 +85,7 @@ export function DatePickerProvider({ children, onChange }: Props) {
       selectedMonthDate,
       selectNextMonth,
       selectPreviousMonth,
+      selectMonth: setSelectedMonthDate,
       daysOfTheMonth: days,
       selectedDayDate,
       selectDay,

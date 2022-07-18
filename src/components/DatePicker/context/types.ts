@@ -8,6 +8,7 @@ export namespace DatePickerContextData {
     selectedMonthDate: Date;
     selectPreviousMonth: () => void;
     selectNextMonth: () => void;
+    selectMonth: (date: Date) => void;
     daysOfTheMonth: Day[];
     selectedDayDate: Date;
     selectDay: (date: Date) => void;

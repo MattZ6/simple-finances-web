@@ -1,9 +1,8 @@
-import { createContext, useCallback, useMemo } from 'react';
-import { useQuery, useQueryClient } from 'react-query';
+import { createContext, useMemo } from 'react';
+import { useQuery } from 'react-query';
 
 import { useMonths } from '@hooks/useMonths';
 
-import { CreateTransactionService } from '@services/simpleFinancesAPI/createTransaction';
 import { GetBalanceService } from '@services/simpleFinancesAPI/getBalance';
 
 import { TransactionsProviderData } from './types';
@@ -94,51 +93,11 @@ type Props = {
 };
 
 export function TransactionsProvider({ children }: Props) {
-  const { selectedMonth, months, refetch: reloadMonths } = useMonths();
-  const queryClient = useQueryClient();
+  const { selectedMonth } = useMonths();
 
   const { isLoading, isError, refetch, data } = useGetBalance({
     date: selectedMonth?.value,
   });
-
-  const createTransaction = useCallback(
-    async (request: CreateTransactionService.Request) => {
-      await CreateTransactionService.execute(request);
-
-      const { date } = request;
-
-      queryClient.invalidateQueries([
-        'balance',
-        date.getUTCFullYear(),
-        date.getUTCMonth() + 1,
-      ]);
-
-      const alreadyLoadedThisMonth = months.some(
-        month =>
-          month.value.getUTCFullYear() === date.getUTCFullYear() &&
-          month.value.getUTCMonth() === date.getUTCMonth()
-      );
-
-      if (!alreadyLoadedThisMonth) {
-        reloadMonths();
-      }
-
-      const mustReloadTransactions =
-        selectedMonth?.value.getUTCFullYear() === date.getUTCFullYear() &&
-        selectedMonth?.value.getUTCMonth() === date.getUTCMonth();
-
-      console.log(
-        mustReloadTransactions
-          ? 'Recarregar transações'
-          : 'Não recarregar transações'
-      );
-
-      if (mustReloadTransactions) {
-        refetch();
-      }
-    },
-    [months, selectedMonth, refetch, reloadMonths, queryClient]
-  );
 
   const contextData = useMemo<TransactionsProviderData.Context>(
     () => ({
@@ -147,9 +106,8 @@ export function TransactionsProvider({ children }: Props) {
       refetch,
       balance: data?.balance ?? { income: 0, outcome: 0, total: 0 },
       dayTransactions: data?.dayTransactions ?? [],
-      createTransaction,
     }),
-    [isLoading, isError, refetch, data, createTransaction]
+    [isLoading, isError, refetch, data]
   );
 
   return (

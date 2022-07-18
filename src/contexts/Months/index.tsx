@@ -9,9 +9,9 @@ import { useQuery } from 'react-query';
 
 import { ListMonthsService } from '@services/simpleFinancesAPI/listMonths';
 
-import { MonthsProviderData } from './types';
+import { MonthsProviderData as Types } from './types';
 
-export const MonthsContext = createContext({} as MonthsProviderData.Context);
+export const MonthsContext = createContext({} as Types.Context);
 
 type Props = {
   children: React.ReactNode;
@@ -29,7 +29,7 @@ function useGetMonths() {
     async () => {
       const response = await ListMonthsService.execute();
 
-      return response.map<MonthsProviderData.Month>(month => {
+      return response.map<Types.Month>(month => {
         const date = new Date(month.date);
 
         return {
@@ -45,14 +45,12 @@ function useGetMonths() {
   );
 }
 
-type SelectedMonth = MonthsProviderData.Month | undefined;
-
 export function MonthsProvider({ children }: Props) {
   const { isLoading, isError, data, refetch } = useGetMonths();
 
-  const [selectedMonth, setSelectedMonth] = useState<SelectedMonth>();
+  const [selectedMonth, setSelectedMonth] = useState<Types.Selected>();
 
-  const selectMonth = useCallback((input: MonthsProviderData.Month) => {
+  const selectMonth = useCallback((input: Types.Month) => {
     setSelectedMonth(state => (state?.key === input.key ? state : input));
   }, []);
 
@@ -100,7 +98,7 @@ export function MonthsProvider({ children }: Props) {
     selectMonth(currentMonth ?? data[0]);
   }, [selectMonth, selectedMonth, data]);
 
-  const contextData = useMemo<MonthsProviderData.Context>(() => {
+  const contextData = useMemo<Types.Context>(() => {
     return {
       isLoading,
       isError,

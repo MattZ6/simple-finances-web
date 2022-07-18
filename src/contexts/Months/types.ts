@@ -4,13 +4,15 @@ export namespace MonthsProviderData {
     value: Date;
   };
 
+  export type Selected = Month | undefined;
+
   export type Context = {
     isLoading: boolean;
     isError: boolean;
     months: Month[];
     refetch: () => void;
 
-    selectedMonth?: Month;
+    selectedMonth: Selected;
     selectMonth: (data: Month) => void;
     selectPrevious: () => void;
     selectNext: () => void;

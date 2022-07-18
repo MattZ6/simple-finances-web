@@ -11,7 +11,8 @@ export namespace DatePickerHeaderStyles {
     fontSize: '$normal',
     lineHeight: '$normal',
     fontWeight: '500',
-    color: '$defaultTextHiContrastColor',
+    color: '$brandTextHiContrastColor',
+    cursor: 'default',
   });
 
   export const HeaderButton = styled('button', {
@@ -28,7 +29,7 @@ export namespace DatePickerHeaderStyles {
     backgroundColor: 'transparent',
     border: 'none',
 
-    color: '$defaultTextLoContrastColor',
+    color: '$brandSolidBackground',
 
     cursor: 'pointer',
 
@@ -40,12 +41,17 @@ export namespace DatePickerHeaderStyles {
     outlineStyle: 'solid',
     outlineColor: 'transparent',
 
+    '&:disabled': {
+      cursor: 'not-allowed',
+      color: '$brandTextLoContrastColor',
+    },
+
     '&:not(:disabled):hover': {
-      backgroundColor: '$defaultElementHoverBackground',
+      backgroundColor: '$brandElementHoverBackground',
     },
 
     '&:focus-visible': {
-      outlineColor: '$defaultElementBorder',
+      outlineColor: '$brandElementBorder',
     },
   });
 }

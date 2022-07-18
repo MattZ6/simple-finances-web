@@ -14,17 +14,17 @@ export namespace DayButtonStyles {
 
     backgroundColor: 'transparent',
 
-    width: '100%',
-    minHeight: '32px',
-    borderRadius: '$medium',
+    $$size: '36px',
+
+    width: '$$size',
+    height: '$$size',
+    borderRadius: '$$size',
     border: 'none',
 
-    fontSize: '$normal',
-    lineHeight: '$normal',
+    fontSize: '$small',
+    lineHeight: '$small',
     fontWeight: '500',
-    color: '$defaultTextHiContrastColor',
-
-    cursor: 'pointer',
+    color: '$brandTextHiContrastColor',
 
     transitionDuration: '150ms',
     transitionTimingFunction: 'ease-out',
@@ -34,26 +34,30 @@ export namespace DayButtonStyles {
     outlineStyle: 'solid',
     outlineColor: 'transparent',
 
+    '&:disabled': {
+      cursor: 'not-allowed',
+
+      backgroundColor: 'transparent',
+      color: '$brandTextHiContrastColor',
+    },
+
     '&:not(:disabled):hover': {
-      backgroundColor: '$defaultElementHoverBackground',
+      backgroundColor: '$brandElementHoverBackground',
+      cursor: 'pointer',
     },
 
     '&:focus-visible': {
-      outlineColor: '$defaultElementBorder',
+      outlineColor: '$brandElementBorder',
     },
 
     variants: {
       selected: {
         true: {
-          backgroundColor: '$brandActiveElementBackground',
-          color: '$brandSolidBackground',
+          backgroundColor: '$brandSolidBackground',
+          color: '$white',
 
           '&:not(:disabled):hover': {
-            backgroundColor: '$brandElementHoverBackground',
-          },
-
-          '&:focus-visible': {
-            outlineColor: '$brandElementBorder',
+            backgroundColor: '$brandSolidHoverBackground',
           },
         },
       },

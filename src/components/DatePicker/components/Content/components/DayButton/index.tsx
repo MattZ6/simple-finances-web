@@ -7,10 +7,11 @@ import { useDatePicker } from '@components/DatePicker/hooks/useDatePicker';
 import { DayButtonStyles as Styles } from './styles';
 
 type Props = {
+  disabled?: boolean;
   day: DatePickerContextData.Day;
 };
 
-export const DayButton = memo(({ day }: Props) => {
+export const DayButton = memo(({ day, disabled }: Props) => {
   const { selectedDayDate, selectDay } = useDatePicker();
 
   const isSelected = useMemo(() => {
@@ -31,6 +32,7 @@ export const DayButton = memo(({ day }: Props) => {
         <Styles.Button
           selected={isSelected}
           onClick={() => selectDay(day.value!)}
+          disabled={disabled}
         >
           {day.value.getUTCDate()}
         </Styles.Button>

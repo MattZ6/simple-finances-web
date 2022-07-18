@@ -1,5 +1,3 @@
-import { CreateTransactionService } from '@services/simpleFinancesAPI/createTransaction';
-
 export namespace TransactionsProviderData {
   export type Tag = {
     id: string;
@@ -43,8 +41,5 @@ export namespace TransactionsProviderData {
     refetch: () => void;
     balance: Balance;
     dayTransactions: DayTransactions[];
-    createTransaction: (
-      request: CreateTransactionService.Request
-    ) => Promise<void>;
   };
 }

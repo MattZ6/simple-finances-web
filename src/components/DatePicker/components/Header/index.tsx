@@ -4,10 +4,15 @@ import { useMemo } from 'react';
 import { formatFullMonth } from '@utils/formatMonth';
 
 import { useDatePicker } from '@components/DatePicker/hooks/useDatePicker';
+import { Tooltip } from '@components/Tooltip';
 
 import { DatePickerHeaderStyles as Styles } from './styles';
 
-export function DatePickerHeader() {
+type Props = {
+  disabled?: boolean;
+};
+
+export function DatePickerHeader({ disabled }: Props) {
   const { selectNextMonth, selectPreviousMonth, selectedMonthDate } =
     useDatePicker();
 
@@ -17,15 +22,27 @@ export function DatePickerHeader() {
 
   return (
     <Styles.Header>
-      <Styles.HeaderButton onClick={selectPreviousMonth}>
-        <ArrowLeft size={20} />
-      </Styles.HeaderButton>
+      <Tooltip content="Mês anterior">
+        <Styles.HeaderButton
+          type="button"
+          onClick={selectPreviousMonth}
+          disabled={disabled}
+        >
+          <ArrowLeft size={20} />
+        </Styles.HeaderButton>
+      </Tooltip>
 
       <Styles.HeaderTitle>{label}</Styles.HeaderTitle>
 
-      <Styles.HeaderButton onClick={selectNextMonth}>
-        <ArrowRight size={20} />
-      </Styles.HeaderButton>
+      <Tooltip content="Mês seguinte">
+        <Styles.HeaderButton
+          type="button"
+          onClick={selectNextMonth}
+          disabled={disabled}
+        >
+          <ArrowRight size={20} />
+        </Styles.HeaderButton>
+      </Tooltip>
     </Styles.Header>
   );
 }

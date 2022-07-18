@@ -3,7 +3,7 @@ import {
   Portal as RadixPortal,
   Overlay as RadixOverlay,
   Content as RadixContent,
-  Close as RadixClose,
+  Title as RadixTitle,
 } from '@radix-ui/react-dialog';
 
 import { keyframes, styled } from '@styles/stitches.config';
@@ -43,17 +43,17 @@ export namespace CreateTransactionDialogStyles {
   export const Content = styled(RadixContent, {
     display: 'flex',
     flexDirection: 'column',
-    gap: '$normal',
 
-    padding: '$medium',
-    paddingTop: '$normal',
     backgroundColor: '$defaultAppBackground',
 
-    borderRadius: '$normal',
+    borderRadius: '$medium',
+    boxShadow: '0px 5px 5px rgba(0, 0, 0, 0.2)',
 
     width: '90vw',
+    minWidth: '480px',
     maxWidth: '720px',
     height: 'fit-content',
+    maxHeight: '80vh',
 
     position: 'fixed',
     top: '50%',
@@ -65,55 +65,44 @@ export namespace CreateTransactionDialogStyles {
     animationName: dialogFadeKeyframes.toString(),
   });
 
-  export const Form = styled('div', {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(2, 1fr)',
-    gap: '$medium',
+  export const Header = styled('header', {
+    paddingRight: '$medium',
+    paddingLeft: '$medium',
+    paddingTop: '$normal',
+    paddingBottom: '$small',
   });
 
-  export const Slot = styled('div', {
+  export const Title = styled(RadixTitle, {
+    fontSize: '$larger',
+    lineHeight: '$larger',
+    fontWeight: '700',
+
+    color: '$defaultTextHiContrastColor',
+  });
+
+  export const Body = styled('div', {
+    display: 'flex',
+    gap: '$normal',
+
+    paddingTop: '$small',
+    paddingLeft: '$medium',
+    paddingRight: '$medium',
+  });
+
+  export const LeftContainer = styled('div', {
     flex: 1,
     display: 'flex',
     flexDirection: 'column',
   });
 
-  export const TagList = styled('div', {
+  export const RightContainer = styled('div', {
     display: 'flex',
-    flexWrap: 'wrap',
-    gap: '$small',
+    flexDirection: 'column',
 
-    marginTop: '$small',
-  });
+    backgroundColor: '$brandAppSubtleBackground',
+    borderRadius: '$medium',
 
-  export const Tag = styled('button', {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: '$small',
-
-    paddingRight: '$normal',
-    paddingLeft: '$small',
-
-    fontSize: '$small',
-    lineHeight: '$small',
-    textAlign: 'center',
-    fontWeight: '500',
-
-    borderWidth: '1px',
-    borderStyle: 'solid',
-    borderRadius: '24px',
-
-    backgroundColor: 'transparent',
-
-    cursor: 'pointer',
-  });
-
-  export const TagDot = styled('div', {
-    $$size: '5px',
-
-    width: '$$size',
-    height: '$$size',
-    borderRadius: '$$size',
+    padding: '$small',
   });
 
   export const Footer = styled('footer', {
@@ -121,27 +110,60 @@ export namespace CreateTransactionDialogStyles {
     alignItems: 'center',
     justifyContent: 'flex-end',
     gap: '$small',
+
+    paddingTop: '$normal',
+    paddingBottom: '$normal',
+    paddingLeft: '$small',
+    paddingRight: '$small',
   });
 
-  export const CancelButton = styled(RadixClose, {
+  export const CloseButton = styled('button', {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
 
+    position: 'relative',
+
     minWidth: '100px',
-    height: '44px',
+    height: '42px',
 
-    paddingLeft: '$normal',
-    paddingRight: '$normal',
+    paddingHorizontal: '$normal',
 
-    borderRadius: '$medium',
     border: 'none',
+    borderRadius: '$normal',
 
-    backgroundColor: '$defaultElementBackground',
-    color: '$defaultTextHiContrastColor',
+    fontSize: '$normal',
+    lineHeight: '$normal',
     fontWeight: '500',
+    letterSpacing: '0.5px',
 
     cursor: 'pointer',
+
+    backgroundColor: 'transparent',
+    color: '$defaultTextHiContrastColor',
+
+    outlineWidth: '2px',
+    outlineStyle: 'solid',
+    outlineColor: 'transparent',
+
+    transitionDuration: '150ms',
+    transitionTimingFunction: 'ease-out',
+    transitionProperty: 'color, background-color, outline-color',
+
+    '&:not(:disabled):hover': {
+      backgroundColor: '$defaultElementHoverBackground',
+    },
+
+    '&:focus-visible': {
+      backgroundColor: '$defaultElementHoverBackground',
+      outlineColor: '$defaultElementBorder',
+    },
+
+    '&:disabled': {
+      cursor: 'not-allowed',
+      backgroundColor: '$defaultElementBackground',
+      color: '$defaultTextLoContrastColor',
+    },
   });
 
   export const SubmitButton = styled('button', {
@@ -149,25 +171,70 @@ export namespace CreateTransactionDialogStyles {
     alignItems: 'center',
     justifyContent: 'center',
 
+    position: 'relative',
+
     minWidth: '100px',
-    height: '44px',
+    height: '42px',
 
-    paddingLeft: '$normal',
-    paddingRight: '$normal',
+    paddingHorizontal: '$normal',
 
-    borderRadius: '$medium',
     border: 'none',
+    borderRadius: '$normal',
+
+    fontSize: '$normal',
+    lineHeight: '$normal',
+    fontWeight: '500',
+    letterSpacing: '0.5px',
+
+    cursor: 'pointer',
 
     backgroundColor: '$brandSolidBackground',
     color: '$white',
-    fontWeight: '500',
 
-    cursor: 'pointer',
+    outlineWidth: '2px',
+    outlineStyle: 'solid',
+    outlineColor: 'transparent',
+
+    transitionDuration: '150ms',
+    transitionTimingFunction: 'ease-out',
+    transitionProperty: 'color, background-color, outline-color',
 
     '&[hidden]': {
       width: 0,
       height: 0,
       overflow: 'hidden',
+      pointerEvents: 'none',
+    },
+
+    '&:not(:disabled):hover': {
+      backgroundColor: '$brandSolidHoverBackground',
+    },
+
+    '&:focus-visible': {
+      backgroundColor: '$brandSolidHoverBackground',
+      outlineColor: '$brandElementBorder',
+    },
+
+    '&:disabled': {
+      cursor: 'not-allowed',
+      backgroundColor: '$defaultElementBackground',
+      color: '$defaultTextLoContrastColor',
+    },
+
+    variants: {
+      submiting: {
+        true: {
+          '&:disabled': {
+            cursor: 'wait',
+            backgroundColor: '$brandSolidHoverBackground',
+            color: '$white',
+          },
+
+          '> svg > circle': {
+            stroke: '$white',
+          },
+        },
+      },
     },
   });
 }
